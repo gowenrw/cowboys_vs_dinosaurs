@@ -1,0 +1,27 @@
+(footprint "LED_Fold_Indicator" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (fp_text reference "Fold" (at 0.6 2.2 unlocked) (layer "F.Fab") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 6c8b0db2-e616-42fc-9a68-62e4fdc2521c)
+  )
+  (fp_text value "LED_Fold_Indicator" (at -0.3 3.4 unlocked) (layer "F.Fab") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 877090e9-0397-4bda-9317-f78b42776273)
+  )
+  (fp_text user "Fold" (at -1.6 -0.7 unlocked) (layer "F.SilkS")
+      (effects (font (size 0.65 0.65) (thickness 0.1)) (justify left bottom))
+    (tstamp 3033c2c7-cd21-4b58-96c1-41aaa50e4c90)
+  )
+  (fp_poly
+    (pts
+      (xy -1.4 -0.1)
+      (xy -1.4 0.1)
+      (xy 0.5 0.1)
+      (xy 0.5 0.4)
+      (xy 1.2 0)
+      (xy 0.5 -0.4)
+      (xy 0.5 -0.1)
+    )
+
+    (stroke (width 0.12) (type solid)) (fill solid) (layer "F.SilkS") (tstamp 5f86aeb3-0659-4f20-b90c-ae642a8af5eb))
+)
