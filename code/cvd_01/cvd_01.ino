@@ -13,20 +13,23 @@
 #define NEO02_DATA 16
 //
 // One color LED Pins
-#define LED_D1 14  // Green - Left Dino no hat
-#define LED_D2 27  // Green - Right Dino hat
-#define LED_D3 26  // Blue - Clubs 10
-#define LED_D4 25  // Red - Hearts J
-#define LED_D5 33  // Blue - Spades Q
-#define LED_D6 32  // Red - Diamonds K
+#define LED_D1 33  // Green - Left Dino no hat
+#define LED_D2 32  // Green - Right Dino hat
+#define LED_D3 14  // Blue - Clubs 10
+#define LED_D4 27  // Red - Hearts J
+#define LED_D5 26  // Blue - Spades Q
+#define LED_D6 25  // Red - Diamonds K
+//
+// Built-in LED
+#define LED_BI 22
 
 //
 // Capacitive Touch Pins
-#define TCH01_PIN 4
-#define TCH02_PIN 2
-#define TCH03_PIN 15
-#define TCH04_PIN 13
-#define TCH05_PIN 12
+#define TCH01_PIN 4  // Dinosaurs
+#define TCH02_PIN 2  // Logo
+#define TCH03_PIN 15 // 3000
+#define TCH04_PIN 13 // Society
+#define TCH05_PIN 12 // Cowboys
 
 // NeoPixel Properties
 //
@@ -105,7 +108,7 @@ int Touch05_Loop_Threshold = 3;
 // Loop Control Properties
 //
 // Main Loop LED Iteration Delay Time [in ms]
-int LEDDelayTime = 20;
+int LEDDelayTime = 15;
 //
 // Debug Serial - If set greater than 0 it writes to serial for debugging
 // 0 = no debug text
@@ -161,7 +164,7 @@ void setup(){
   if (DebugSerial >= 2) {
     Serial.println("Set Output for non-PWM LED Pins");
   }
-  pinMode(LED_D2, OUTPUT);
+  pinMode(LED_BI, OUTPUT);
 
   // Initialize the NeoPixels
   if (DebugSerial >= 2) {
@@ -208,47 +211,14 @@ void loop(){
   Touch05_Value = touchRead(TCH05_PIN);
   if ( (Touch05_Value / Touch05_Threshold) > 2 ) { Touch05_Threshold = int(Touch05_Threshold * 1.8); }
 
+  // //////////////////////////////////
+  //     START OF ITERATION LOOP
+  // //////////////////////////////////
+  //
   // Iterate 0 to 254
   for(int i=0; i<255; i++){
     // Set position value to iteration value
     int pos = i;
-
-    //
-    // First of three position groups i 0-84
-    if (pos < 85) {
-      //
-      // LED FUNCTIONS
-      table_neo_colorshift(pos, 1);
-      threeks_neo_colorshift(pos, 1);
-      neo_show();
-      ledPwmAlternate(pos, 1);
-    // Second of three position groups i 85-169 (pos-85 = 0-84)
-    } else if (pos < 170) {
-      pos = pos - 85;
-      //
-      // LED FUNCTIONS
-      table_neo_colorshift(pos, 2);
-      threeks_neo_colorshift(pos, 2);
-      neo_show();
-      ledPwmAlternate(pos, 2);
-    // Third of three position groups i 170-254 (pos-170 = 0-84)
-    } else {
-      pos = pos -170;
-      //
-      // LED FUNCTIONS
-      table_neo_colorshift(pos, 3);
-      threeks_neo_colorshift(pos, 3);
-      neo_show();
-      // Split third group 3/4 (pos 0-42) for even number of transitions
-      if (pos <43) {
-        //
-        ledPwmAlternate(pos, 3);
-      // Split third group 4/4 (pos 43-84) for even number of transitions
-      } else {
-        //
-        ledPwmAlternate(pos, 4);
-      }
-    }
 
     // DEBUG - Print current Iteration value to serial console for troubleshooting
     if (DebugSerial >= 2) {
@@ -260,12 +230,11 @@ void loop(){
     // TOUCH
     //
     // Read Touch Values
-    Touch01_Value = touchRead(TCH01_PIN);
-    Touch02_Value = touchRead(TCH02_PIN);
-    Touch03_Value = touchRead(TCH03_PIN);
-    Touch04_Value = touchRead(TCH04_PIN);
-    Touch05_Value = touchRead(TCH05_PIN);
-    //
+    Touch01_Value = touchRead(TCH01_PIN); // Dinosaurs
+    Touch02_Value = touchRead(TCH02_PIN); // Logo
+    Touch03_Value = touchRead(TCH03_PIN); // 3000
+    Touch04_Value = touchRead(TCH04_PIN); // Society
+    Touch05_Value = touchRead(TCH05_PIN); // Cowboys
     // **************************************************************
     //
     // Do Stuff If We Detect a Touch on TCH01_PIN
@@ -283,6 +252,7 @@ void loop(){
       }
       // Put stuff to happen every iteration here
       Touch01_IntCount = 1;
+      touchedDinosaurs();
     //
     // Do Stuff If We DONT Detect a Touch on TCH01_PIN
     } else {
@@ -295,7 +265,6 @@ void loop(){
       }
       // STUFF - TCH01_PIN NOT TOUCHED
     }
-    //
     // **************************************************************
     //
     // Do Stuff If We Detect a Touch on TCH02_PIN
@@ -325,7 +294,6 @@ void loop(){
       }
       // STUFF - TCH02_PIN NOT TOUCHED
     }
-    //
     // **************************************************************
     //
     // Do Stuff If We Detect a Touch on TCH03_PIN
@@ -355,7 +323,6 @@ void loop(){
       }
       // STUFF - TCH03_PIN NOT TOUCHED
     }
-    //
     // **************************************************************
     //
     // Do Stuff If We Detect a Touch on TCH04_PIN
@@ -385,7 +352,6 @@ void loop(){
       }
       // STUFF - TCH04_PIN NOT TOUCHED
     }
-    //
     // **************************************************************
     //
     // Do Stuff If We Detect a Touch on TCH05_PIN
@@ -403,6 +369,7 @@ void loop(){
       }
       // Put stuff to happen every iteration here
       Touch05_IntCount = 1;
+      touchedCowboys();
     //
     // Do Stuff If We DONT Detect a Touch on TCH05_PIN
     } else {
@@ -416,6 +383,45 @@ void loop(){
       // STUFF - TCH05_PIN NOT TOUCHED
     }
 
+    //
+    // DEFAULT MODE
+    //
+    // First of three position groups i 0-84
+    if (pos < 85) {
+      //
+      // LED FUNCTIONS
+      table_neo_colorshift(pos, 1);
+      threeks_neo_colorshift(pos, 1);
+      ledPwmAlternate(pos, 1);
+      BI_blink_two(pos);
+    // Second of three position groups i 85-169 (pos-85 = 0-84)
+    } else if (pos < 170) {
+      pos = pos - 85;
+      //
+      // LED FUNCTIONS
+      table_neo_colorshift(pos, 2);
+      threeks_neo_colorshift(pos, 2);
+      ledPwmAlternate(pos, 2);
+      BI_blink_two(pos);
+    // Third of three position groups i 170-254 (pos-170 = 0-84)
+    } else {
+      pos = pos -170;
+      //
+      // LED FUNCTIONS
+      table_neo_colorshift(pos, 3);
+      threeks_neo_colorshift(pos, 3);
+      BI_blink_two(pos);
+      // Split third group 3/4 (pos 0-42) for even number of transitions
+      if (pos <43) {
+        //
+        ledPwmAlternate(pos, 3);
+      // Split third group 4/4 (pos 43-84) for even number of transitions
+      } else {
+        //
+        ledPwmAlternate(pos, 4);
+      }
+    }
+
     // DEBUG - Print status neopixel mode
     if (DebugSerial >= 2) {
       // Status NeoPixel LED color mode default=0 green=1 blue=2 red=3
@@ -427,11 +433,17 @@ void loop(){
       Serial.println();
     }
 
+    // Display Neopixel values
+    neo_show();
+
     // Pause the loop to display everything
     delay(LEDDelayTime);
 
     // END OF FOR ITERATION LOOP
   }
+  // //////////////////////////////////
+  //     END OF ITERATION LOOP
+  // //////////////////////////////////
 
   // Touch Loop Counters - USE TBD
   if (Touch01_IntCount == 1) { Touch01_LoopCount++; Touch01_IntCount = 0; } else { Touch01_LoopCount = 0; }
@@ -443,8 +455,11 @@ void loop(){
   // Turn off all LEDs at end of loop (Optional)
   // ledAllOff();
 
-  // END OF MAIN LOOP
 }
+// //////////////////////////////////
+//        END OF MAIN LOOP
+// //////////////////////////////////
+
 
 // //////////////////////////////////////////////////
 //
@@ -488,6 +503,7 @@ void wakeModemSleep() {
 // LED Functions
 // //////////////////////////////////////////////////
 void ledAllOff() {
+  digitalWrite(LED_BI, HIGH); // HIGH = OFF?
   ledcWrite(LED_D1_pwm, 0);
   ledcWrite(LED_D2_pwm, 0);
   ledcWrite(LED_D3_pwm, 0);
@@ -504,6 +520,24 @@ void ledAllOff() {
   NEO02.show();
 }
 //
+void ledPwmAllOn() {
+    ledcWrite(LED_D1_pwm, 255);
+    ledcWrite(LED_D3_pwm, 255);
+    ledcWrite(LED_D5_pwm, 255);
+    ledcWrite(LED_D2_pwm, 255);
+    ledcWrite(LED_D4_pwm, 255);
+    ledcWrite(LED_D6_pwm, 255);
+}
+//
+void ledPwmAllOff() {
+    ledcWrite(LED_D1_pwm, 0);
+    ledcWrite(LED_D3_pwm, 0);
+    ledcWrite(LED_D5_pwm, 0);
+    ledcWrite(LED_D2_pwm, 0);
+    ledcWrite(LED_D4_pwm, 0);
+    ledcWrite(LED_D6_pwm, 0);
+}
+//
 void ledPwmAlternate(uint8_t pos, uint8_t pass) {
   //
   // Alternate pulses between blue&red and the two green
@@ -516,49 +550,77 @@ void ledPwmAlternate(uint8_t pos, uint8_t pass) {
   // D5 = Blue - Spades Q
   // D6 = Red - Diamonds K
   //
+  // If T1 or T5 were pressed dont do anything here
+  if (Touch01_IntCount > 0 || Touch05_IntCount > 0) { pass = 0; }
+  //
+  // lightlevel var used to set the pwm value
+  uint8_t lightlevel = 0;
+  //
   // Pass 1 pos 0-84
-  // D1/3/5 ON->OFF
-  // D2/4/6 OFF->ON
+  // D2/3/5 ON->OFF
+  // D1/4/6 OFF->ON
   if (pass == 1){
-    ledcWrite(LED_D1_pwm, int(255 - (pos*3)));
-    ledcWrite(LED_D3_pwm, int(255 - (pos*3)));
-    ledcWrite(LED_D5_pwm, int(255 - (pos*3)));
-    ledcWrite(LED_D2_pwm, int(pos*3));
-    ledcWrite(LED_D4_pwm, int(pos*3));
-    ledcWrite(LED_D6_pwm, int(pos*3));
+    if (pos <= 16) { lightlevel = 0; }
+    else if (pos > 16 and pos <= 32) { lightlevel = 64; }
+    else if (pos > 32 and pos <= 48) { lightlevel = 128; }
+    else if (pos > 48 and pos <= 64) { lightlevel = 192; }
+    else { lightlevel = 255; }
+    ledcWrite(LED_D2_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D3_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D5_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D1_pwm, int(lightlevel));
+    ledcWrite(LED_D4_pwm, int(lightlevel));
+    ledcWrite(LED_D6_pwm, int(lightlevel));
   }
   // Pass 2 pos 0-84
-  // D1/3/5 OFF->ON
-  // D2/4/6 ON->OFF
+  // D2/3/5 OFF->ON
+  // D1/4/6 ON->OFF
   if (pass == 2){
-    ledcWrite(LED_D1_pwm, int(pos*3));
-    ledcWrite(LED_D3_pwm, int(pos*3));
-    ledcWrite(LED_D5_pwm, int(pos*3));
-    ledcWrite(LED_D2_pwm, int(255 - (pos*3)));
-    ledcWrite(LED_D4_pwm, int(255 - (pos*3)));
-    ledcWrite(LED_D6_pwm, int(255 - (pos*3)));
+    if (pos <= 16) { lightlevel = 0; }
+    else if (pos > 16 and pos <= 32) { lightlevel = 64; }
+    else if (pos > 32 and pos <= 48) { lightlevel = 128; }
+    else if (pos > 48 and pos <= 64) { lightlevel = 192; }
+    else { lightlevel = 255; }
+    ledcWrite(LED_D2_pwm, int(lightlevel));
+    ledcWrite(LED_D3_pwm, int(lightlevel));
+    ledcWrite(LED_D5_pwm, int(lightlevel));
+    ledcWrite(LED_D1_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D4_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D6_pwm, int(255 - lightlevel));
   }
   // Pass 3 pos 0-42
-  // D1/3/5 ON->OFF
-  // D2/4/6 OFF->ON
+  // D3/5 ON->OFF
+  // D4/6 OFF->ON
+  // D1/2 ON
   if (pass == 3){
-    ledcWrite(LED_D1_pwm, int(255 - ((pos-43)*6)));
-    ledcWrite(LED_D3_pwm, int(255 - ((pos-43)*6)));
-    ledcWrite(LED_D5_pwm, int(255 - ((pos-43)*6)));
-    ledcWrite(LED_D2_pwm, int((pos-43)*6));
-    ledcWrite(LED_D4_pwm, int((pos-43)*6));
-    ledcWrite(LED_D6_pwm, int((pos-43)*6));
+    if (pos <= 8) { lightlevel = 0; }
+    else if (pos > 8 and pos <= 16) { lightlevel = 64; }
+    else if (pos > 16 and pos <= 24) { lightlevel = 128; }
+    else if (pos > 24 and pos <= 32) { lightlevel = 192; }
+    else { lightlevel = 255; }
+    ledcWrite(LED_D3_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D5_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D4_pwm, int(lightlevel));
+    ledcWrite(LED_D6_pwm, int(lightlevel));
+    ledcWrite(LED_D1_pwm, 255);
+    ledcWrite(LED_D2_pwm, 255);
   }
   // Pass 4 pos 43-84
-  // D1/3/5 OFF->ON
-  // D2/4/6 ON->OFF
+  // D3/5 OFF->ON
+  // D4/6 ON->OFF
+  // D1/2 ON
   if (pass == 4){
-    ledcWrite(LED_D1_pwm, int((pos-43)*6));
-    ledcWrite(LED_D3_pwm, int((pos-43)*6));
-    ledcWrite(LED_D5_pwm, int((pos-43)*6));
-    ledcWrite(LED_D2_pwm, int(255 - ((pos-43)*6)));
-    ledcWrite(LED_D4_pwm, int(255 - ((pos-43)*6)));
-    ledcWrite(LED_D6_pwm, int(255 - ((pos-43)*6)));
+    if (pos <= 51) { lightlevel = 0; }
+    else if (pos > 51 and pos <= 59) { lightlevel = 64; }
+    else if (pos > 59 and pos <= 67) { lightlevel = 128; }
+    else if (pos > 67 and pos <= 75) { lightlevel = 192; }
+    else { lightlevel = 255; }
+    ledcWrite(LED_D3_pwm, int(lightlevel));
+    ledcWrite(LED_D5_pwm, int(lightlevel));
+    ledcWrite(LED_D4_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D6_pwm, int(255 - lightlevel));
+    ledcWrite(LED_D1_pwm, 255);
+    ledcWrite(LED_D2_pwm, 255);
   }
 }
 //
@@ -569,6 +631,9 @@ void neo_show() {
 }
 //
 void table_neo_colorshift(uint8_t pos, uint8_t pass) {
+  // If T1 or T5 were pressed dont do anything here
+  if (Touch01_IntCount > 0 || Touch05_IntCount > 0) { pass = 0; }
+  //
   // Pass 1 pos 0-84
   if (pass == 1){
     // Red 255-0 Green 0-255
@@ -634,4 +699,63 @@ void threeks_neo_blue() {
   NEO02.setPixelColor(2, 0, 0, 255);
 }
 //
-
+void touchedCowboys() {
+    // Light Cowboys and 3KS logo but nothing else
+    ledcWrite(LED_D1_pwm, 0);
+    ledcWrite(LED_D2_pwm, 0);
+    ledcWrite(LED_D3_pwm, 0);
+    ledcWrite(LED_D4_pwm, 0);
+    ledcWrite(LED_D5_pwm, 0);
+    ledcWrite(LED_D6_pwm, 0);
+    NEO01.setPixelColor(0, 0, 0, 255);
+    NEO01.setPixelColor(1, 0, 0, 0);
+    NEO01.setPixelColor(2, 0, 0, 255);
+    NEO02.setPixelColor(0, 0, 0, 0);
+    NEO02.setPixelColor(1, 0, 0, 0);
+    NEO02.setPixelColor(2, 255, 255, 255);
+}
+//
+void touchedDinosaurs() {
+    // Light Dinos and 3KS logo but nothing else
+    ledcWrite(LED_D1_pwm, 255);
+    ledcWrite(LED_D2_pwm, 255);
+    ledcWrite(LED_D3_pwm, 0);
+    ledcWrite(LED_D4_pwm, 0);
+    ledcWrite(LED_D5_pwm, 0);
+    ledcWrite(LED_D6_pwm, 0);
+    NEO01.setPixelColor(0, 0, 0, 0);
+    NEO01.setPixelColor(1, 0, 0, 0);
+    NEO01.setPixelColor(2, 0, 0, 0);
+    NEO02.setPixelColor(0, 0, 0, 0);
+    NEO02.setPixelColor(1, 0, 0, 0);
+    NEO02.setPixelColor(2, 255, 255, 255);
+}
+//
+void BI_on() {
+  digitalWrite(LED_BI, LOW); // LOW = ON?
+}
+//
+void BI_off() {
+  digitalWrite(LED_BI, HIGH); // HIGH = OFF?
+}
+//
+void BI_blink_one(uint8_t pos) {
+  if (pos <= 21) {
+    digitalWrite(LED_BI, LOW); // LOW = ON?
+  } else {
+    digitalWrite(LED_BI, HIGH); // HIGH = OFF?
+  }
+}
+//
+void BI_blink_two(uint8_t pos) {
+  if (pos <= 11) {
+    digitalWrite(LED_BI, LOW); // LOW = ON?
+  } else if (pos > 11 and pos <= 22) {
+    digitalWrite(LED_BI, HIGH); // HIGH = OFF?
+  } else if (pos > 22 and pos <= 33) {
+    digitalWrite(LED_BI, LOW); // LOW = ON?
+  } else {
+    digitalWrite(LED_BI, HIGH); // HIGH = OFF?
+  }
+}
+//
