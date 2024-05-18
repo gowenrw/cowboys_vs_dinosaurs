@@ -13,8 +13,8 @@
 #define NEO02_DATA 16
 //
 // One color LED Pins
-#define LED_D1 33  // Green - Left Dino no hat
-#define LED_D2 32  // Green - Right Dino hat
+#define LED_D1 33  // White - Left Dino no hat
+#define LED_D2 32  // White - Right Dino hat
 #define LED_D3 14  // Blue - Clubs 10
 #define LED_D4 27  // Red - Hearts J
 #define LED_D5 26  // Blue - Spades Q
@@ -457,6 +457,35 @@ void loop(){
 
   // //////////////////////////////////////////////////
   //
+  // Launch REACTION TIME GAME Alternate Mainline Code When
+  // Touch01_LoopCount exceeds Touch01_Loop_Threshold
+  //
+  // //////////////////////////////////////////////////
+  if (Touch01_LoopCount > Touch01_Loop_Threshold) {
+    //
+    Serial.println("LONG TOUCH DETECTED on TCH01 - JUMP TO ALTERNATE CODE");
+    //
+    ledAllOff();
+    //
+    Touch01_LoopCount = 0;
+    //
+    // Alternate code loop
+    reaction_time_game();
+    //
+    // END ALTERNATE MAIN LOOP
+    Serial.println("****************************************");
+    Serial.println("****** EXITING REACTION TIME GAME ******");
+    Serial.println("****************************************");
+    //
+    ledAllOff();
+    //
+    Touch01_LoopCount = 0;
+    // Pause before exiting
+    delay(100);
+  }
+
+  // //////////////////////////////////////////////////
+  //
   // Launch BATT_CHRG_NOLED Alternate Mainline Code When
   // Touch02_LoopCount exceeds Touch02_Loop_Threshold
   //
@@ -469,52 +498,9 @@ void loop(){
     //
     Touch02_LoopCount = 0;
     //
-    bool batt_chrg_noled_active = true;
+    // Alternate code loop
+    batt_chrg_noled();
     //
-    while (batt_chrg_noled_active) {
-      BI_off();
-      // Print Serial Message About Mode
-      Serial.println("****************************************");
-      Serial.println("****************************************");
-      Serial.println("********* BATT_CHRG_NOLED MODE *********");
-      Serial.println("****************************************");
-      Serial.println("****************************************");
-      Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH02 ***");
-      Serial.println("****************************************");
-      Serial.println("****************************************");
-      Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
-      Serial.println("****************************************");
-      Serial.println("****************************************");
-      // Pause
-      delay(3500);
-      // Turn on-board LED on briefly to show badge is still on
-      BI_on();
-      // Pause
-      delay(500);
-      //
-      // Touch for exit mode settings
-      //
-      Touch02_Value = touchRead(TCH02_PIN);
-      // Do Stuff If We Detect a Touch on TCH02_PIN
-      if (Touch02_Value < Touch02_Threshold) {
-        // DEBUG - Print current Touch value/threshold to serial console for troubleshooting
-        if (DebugSerial >= 2) {
-          Serial.print("TCH02_TOUCHED="); Serial.print(Touch02_Value);
-          Serial.print("/"); Serial.print(Touch02_Threshold);
-          Serial.print("-"); Serial.println(Touch02_LoopCount);
-        }
-        // STUFF - TCH02_PIN TOUCHED
-        Touch02_LoopCount++;
-      //
-      // Do Stuff If We DONT Detect a Touch on TCH02_PIN
-      } else {
-        // STUFF - TCH02_PIN NOT TOUCHED
-        Touch02_LoopCount = 0;
-      }
-      if (Touch02_LoopCount > Touch02_Loop_Threshold) {
-        batt_chrg_noled_active = false;
-      }
-    }
     // END ALTERNATE MAIN LOOP
     Serial.println("****************************************");
     Serial.println("***** EXITING BATT_CHRG_NOLED MODE *****");
@@ -771,6 +757,19 @@ void threeks_neo_blue() {
   NEO02.setPixelColor(2, 0, 0, 255);
 }
 //
+void status_indicator(uint8_t status) {
+  // Status NeoPixel LED color mode default=0 green=1 blue=2 red=3
+  if (status == 1){
+    NEO02.setPixelColor(2, 0, 255, 0);
+  }
+  if (status == 2){
+    NEO02.setPixelColor(2, 0, 0, 255);
+  }
+  if (status == 3){
+    NEO02.setPixelColor(2, 255, 0, 0);
+  }
+}
+//
 void touchedCowboys() {
     // Light Cowboys and 3KS logo but nothing else
     ledcWrite(LED_D1_pwm, 0);
@@ -831,3 +830,131 @@ void BI_blink_two(uint8_t pos) {
   }
 }
 //
+void reaction_time_game() {
+  // Set status to 1/green
+  status_neo_mode = 1;
+  status_indicator(status_neo_mode);
+  neo_show();
+  //
+  // Set an exit var
+  bool reaction_time_active = true;
+  //
+  // Set delay values
+  int delaybase = 100;
+  int delaytime = delaybase + 0;
+  //
+  while (reaction_time_active) {
+    // Print Serial Message About Mode
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("******* REACTION TIME GAME MODE ********");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH01 ***");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    // All OFF
+    ledcWrite(LED_D3_pwm, 0);
+    ledcWrite(LED_D4_pwm, 0);
+    ledcWrite(LED_D5_pwm, 0);
+    ledcWrite(LED_D6_pwm, 0);
+    // Pause
+    delay(10);
+    // Loop 0-8 - none/1/2/3/4/3/2/1/none
+    for(int r=0; r<9; r++){
+      if (r == 1) { ledcWrite(LED_D3_pwm, 255); delaytime = delaybase + 50;}
+      if (r == 2) { ledcWrite(LED_D4_pwm, 255); delaytime = delaybase + 25;}
+      if (r == 3) { ledcWrite(LED_D5_pwm, 255); delaytime = delaybase;}
+      if (r == 4) { ledcWrite(LED_D6_pwm, 255); delaytime = delaybase - 50;}
+      if (r == 5) { ledcWrite(LED_D6_pwm, 0); delaytime = delaybase;}
+      if (r == 6) { ledcWrite(LED_D5_pwm, 0); delaytime = delaybase + 25;}
+      if (r == 7) { ledcWrite(LED_D4_pwm, 0); delaytime = delaybase + 50;}
+      if (r == 8) { ledcWrite(LED_D3_pwm, 0); delaytime = delaybase + 75;}
+      // DEBUG - Print current iteration and delaytime to serial console for troubleshooting
+      if (DebugSerial >= 2) {
+        Serial.print("R="); Serial.print(r);
+        Serial.print(" Delaytime="); Serial.println(delaytime);
+      }
+      //
+      // Touch for exit mode settings
+      Touch01_Value = touchRead(TCH01_PIN);
+      // Do Stuff If We Detect a Touch on TCH01_PIN
+      if (Touch01_Value < Touch01_Threshold) {
+        // DEBUG - Print current Touch value/threshold to serial console for troubleshooting
+        if (DebugSerial >= 2) {
+          Serial.print("TCH01_TOUCHED="); Serial.print(Touch01_Value);
+          Serial.print("/"); Serial.print(Touch01_Threshold);
+          Serial.print("-"); Serial.println(Touch01_LoopCount);
+        }
+        // STUFF - TCH01_PIN TOUCHED
+        Touch01_LoopCount++;
+        delay(1000);
+        break;
+      //
+      // Do Stuff If We DONT Detect a Touch on TCH01_PIN
+      } else {
+        // STUFF - TCH01_PIN NOT TOUCHED
+        Touch01_LoopCount = 0;
+      }
+      // Delay
+      delay(delaytime);
+    }
+    // break out if touch loop threshold met
+    if (Touch01_LoopCount > Touch01_Loop_Threshold) {
+      reaction_time_active = false;
+    }
+  }
+}
+//
+void batt_chrg_noled() {
+  // Set an exit var
+  bool batt_chrg_noled_active = true;
+  //
+  while (batt_chrg_noled_active) {
+    BI_off();
+    // Print Serial Message About Mode
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("********* BATT_CHRG_NOLED MODE *********");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH02 ***");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    // Pause
+    delay(3500);
+    // Turn on-board LED on briefly to show badge is still on
+    BI_on();
+    // Pause
+    delay(500);
+    //
+    // Touch for exit mode settings
+    //
+    Touch02_Value = touchRead(TCH02_PIN);
+    // Do Stuff If We Detect a Touch on TCH02_PIN
+    if (Touch02_Value < Touch02_Threshold) {
+      // DEBUG - Print current Touch value/threshold to serial console for troubleshooting
+      if (DebugSerial >= 2) {
+        Serial.print("TCH02_TOUCHED="); Serial.print(Touch02_Value);
+        Serial.print("/"); Serial.print(Touch02_Threshold);
+        Serial.print("-"); Serial.println(Touch02_LoopCount);
+      }
+      // STUFF - TCH02_PIN TOUCHED
+      Touch02_LoopCount++;
+    //
+    // Do Stuff If We DONT Detect a Touch on TCH02_PIN
+    } else {
+      // STUFF - TCH02_PIN NOT TOUCHED
+      Touch02_LoopCount = 0;
+    }
+    if (Touch02_LoopCount > Touch02_Loop_Threshold) {
+      batt_chrg_noled_active = false;
+    }
+  }
+}
