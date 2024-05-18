@@ -455,6 +455,78 @@ void loop(){
   // Turn off all LEDs at end of loop (Optional)
   // ledAllOff();
 
+  // //////////////////////////////////////////////////
+  //
+  // Launch BATT_CHRG_NOLED Alternate Mainline Code When
+  // Touch02_LoopCount exceeds Touch02_Loop_Threshold
+  //
+  // //////////////////////////////////////////////////
+  if (Touch02_LoopCount > Touch02_Loop_Threshold) {
+    //
+    Serial.println("LONG TOUCH DETECTED on TCH02 - JUMP TO ALTERNATE CODE");
+    //
+    ledAllOff();
+    //
+    Touch02_LoopCount = 0;
+    //
+    bool batt_chrg_noled_active = true;
+    //
+    while (batt_chrg_noled_active) {
+      BI_off();
+      // Print Serial Message About Mode
+      Serial.println("****************************************");
+      Serial.println("****************************************");
+      Serial.println("********* BATT_CHRG_NOLED MODE *********");
+      Serial.println("****************************************");
+      Serial.println("****************************************");
+      Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH02 ***");
+      Serial.println("****************************************");
+      Serial.println("****************************************");
+      Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
+      Serial.println("****************************************");
+      Serial.println("****************************************");
+      // Pause
+      delay(3500);
+      // Turn on-board LED on briefly to show badge is still on
+      BI_on();
+      // Pause
+      delay(500);
+      //
+      // Touch for exit mode settings
+      //
+      Touch02_Value = touchRead(TCH02_PIN);
+      // Do Stuff If We Detect a Touch on TCH02_PIN
+      if (Touch02_Value < Touch02_Threshold) {
+        // DEBUG - Print current Touch value/threshold to serial console for troubleshooting
+        if (DebugSerial >= 2) {
+          Serial.print("TCH02_TOUCHED="); Serial.print(Touch02_Value);
+          Serial.print("/"); Serial.print(Touch02_Threshold);
+          Serial.print("-"); Serial.println(Touch02_LoopCount);
+        }
+        // STUFF - TCH02_PIN TOUCHED
+        Touch02_LoopCount++;
+      //
+      // Do Stuff If We DONT Detect a Touch on TCH02_PIN
+      } else {
+        // STUFF - TCH02_PIN NOT TOUCHED
+        Touch02_LoopCount = 0;
+      }
+      if (Touch02_LoopCount > Touch02_Loop_Threshold) {
+        batt_chrg_noled_active = false;
+      }
+    }
+    // END ALTERNATE MAIN LOOP
+    Serial.println("****************************************");
+    Serial.println("***** EXITING BATT_CHRG_NOLED MODE *****");
+    Serial.println("****************************************");
+    //
+    ledAllOff();
+    //
+    Touch02_LoopCount = 0;
+    // Pause before exiting
+    delay(100);
+  }
+
 }
 // //////////////////////////////////
 //        END OF MAIN LOOP
