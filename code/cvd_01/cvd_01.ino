@@ -1102,32 +1102,32 @@ void flush_card_game() {
         Serial.print(" "); Serial.print(seedsrc6);
         Serial.print(" "); Serial.print(seedsrc7);
       }
-      if (card_rand_1 == 0) {
-        cardseed = (seedsrc1 + seedsrc3 + seedsrc6);
+      if (card_rand_1 < 3) {
+        cardseed = (seedsrc1 + seedsrc2 + seedsrc3 + seedsrc4 + seedsrc5 + seedsrc6 + seedsrc7);
         randomSeed(cardseed);
       }
       card_rand_1 = random(0, 7);
       if (DebugSerial >= 2) { Serial.print(" card1="); Serial.print(card_rand_1); Serial.print("/"); Serial.print(cardseed); }
-      if (card_rand_2 == 0) {
-        cardseed = (seedsrc2 + seedsrc4 + seedsrc7);
+      if (card_rand_2 < 3) {
+        cardseed = (seedsrc1 + seedsrc2 + seedsrc3 + seedsrc4 + seedsrc5 + seedsrc6 + seedsrc7);
         randomSeed(cardseed);
       }
       card_rand_2 = random(0, 7);
       if (DebugSerial >= 2) { Serial.print(" card2="); Serial.print(card_rand_2); Serial.print("/"); Serial.print(cardseed); }
-      if (card_rand_3 == 0) {
-        cardseed = (seedsrc1 + seedsrc4 + seedsrc6);
+      if (card_rand_3 < 3) {
+        cardseed = (seedsrc1 + seedsrc2 + seedsrc3 + seedsrc4 + seedsrc5 + seedsrc6 + seedsrc7);
         randomSeed(cardseed);
       }
       card_rand_3 = random(0, 7);
       if (DebugSerial >= 2) { Serial.print(" card3="); Serial.print(card_rand_3); Serial.print("/"); Serial.print(cardseed); }
-      if (card_rand_4 == 0) {
-        cardseed = (seedsrc3 + seedsrc5 + seedsrc7);
+      if (card_rand_4 < 3) {
+        cardseed = (seedsrc1 + seedsrc2 + seedsrc3 + seedsrc4 + seedsrc5 + seedsrc6 + seedsrc7);
         randomSeed(cardseed);
       }
       card_rand_4 = random(0, 7);
       if (DebugSerial >= 2) { Serial.print(" card4="); Serial.print(card_rand_4); Serial.print("/"); Serial.print(cardseed); }
-      if (card_rand_5 == 0) {
-        cardseed = (seedsrc4 + seedsrc5 + seedsrc6);
+      if (card_rand_5 < 3) {
+        cardseed = (seedsrc1 + seedsrc2 + seedsrc3 + seedsrc4 + seedsrc5 + seedsrc6 + seedsrc7);
         randomSeed(cardseed);
       }
       card_rand_5 = random(0, 7);
