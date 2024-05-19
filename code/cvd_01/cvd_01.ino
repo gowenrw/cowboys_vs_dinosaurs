@@ -480,6 +480,8 @@ void loop(){
     ledAllOff();
     //
     Touch01_LoopCount = 0;
+    //
+    status_neo_mode = 0;
     // Pause before exiting
     delay(100);
   }
@@ -509,6 +511,39 @@ void loop(){
     ledAllOff();
     //
     Touch02_LoopCount = 0;
+    //
+    status_neo_mode = 0;
+    // Pause before exiting
+    delay(100);
+  }
+
+  // //////////////////////////////////////////////////
+  //
+  // Launch FLUSH CARD GAME Alternate Mainline Code When
+  // Touch05_LoopCount exceeds Touch05_Loop_Threshold
+  //
+  // //////////////////////////////////////////////////
+  if (Touch05_LoopCount > Touch05_Loop_Threshold) {
+    //
+    Serial.println("LONG TOUCH DETECTED on TCH05 - JUMP TO ALTERNATE CODE");
+    //
+    ledAllOff();
+    //
+    Touch05_LoopCount = 0;
+    //
+    // Alternate code loop
+    flush_card_game();
+    //
+    // END ALTERNATE MAIN LOOP
+    Serial.println("****************************************");
+    Serial.println("***** EXITING FLUSH CARD GAME MODE *****");
+    Serial.println("****************************************");
+    //
+    ledAllOff();
+    //
+    Touch05_LoopCount = 0;
+    //
+    status_neo_mode = 0;
     // Pause before exiting
     delay(100);
   }
@@ -879,7 +914,8 @@ void reaction_time_game() {
         Serial.print(" Delaytime="); Serial.println(delaytime);
       }
       //
-      // Touch for exit mode settings
+      // Touch
+      //
       Touch01_Value = touchRead(TCH01_PIN);
       // Do Stuff If We Detect a Touch on TCH01_PIN
       if (Touch01_Value < Touch01_Threshold) {
@@ -955,6 +991,195 @@ void batt_chrg_noled() {
     }
     if (Touch02_LoopCount > Touch02_Loop_Threshold) {
       batt_chrg_noled_active = false;
+    }
+  }
+}
+//
+void flush_card_game() {
+  // Set status to 2/blue
+  status_neo_mode = 2;
+  status_indicator(status_neo_mode);
+  neo_show();
+  //
+  // Set an exit var
+  bool flush_card_active = true;
+  //
+  // Set delay value
+  int delaytime = 250;
+  //
+  // Set Card Random variables
+  int card_rand_1 = 0;
+  int card_rand_2 = 0;
+  int card_rand_3 = 0;
+  int card_rand_4 = 0;
+  int card_rand_5 = 0;
+  //
+  // Set Card Color Values
+  int card_red[] = { 255, 0, 0, 255 };
+  int card_green[] = { 0, 255, 0, 0 };
+  int card_blue[] = { 0, 0, 255, 255 };
+  //
+  //set the resolution to 12 bits (0-4095)
+  analogReadResolution(12);
+  //
+  // Set Flush Detector
+  bool flush_win = false;
+  //
+  while (flush_card_active) {
+    // Print Serial Message About Mode
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("******** FLUSH CARD GAME MODE **********");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH05 ***");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
+    Serial.println("****************************************");
+    Serial.println("****************************************");
+    //
+    for(int f=1; f<6; f++){
+      if (f == 1) {
+        //
+        NEO01.setPixelColor(0, 255, 255, 255);
+        NEO01.setPixelColor(1, 0, 0, 0);
+        NEO01.setPixelColor(2, 0, 0, 0);
+        NEO02.setPixelColor(1, 0, 0, 0);
+        NEO02.setPixelColor(0, 0, 0, 0);
+      } else if (f == 2) {
+        NEO01.setPixelColor(0, 0, 0, 0);
+        NEO01.setPixelColor(1, 255, 255, 255);
+        NEO01.setPixelColor(2, 0, 0, 0);
+        NEO02.setPixelColor(1, 0, 0, 0);
+        NEO02.setPixelColor(0, 0, 0, 0);
+      } else if (f == 3) {
+        NEO01.setPixelColor(0, 0, 0, 0);
+        NEO01.setPixelColor(1, 0, 0, 0);
+        NEO01.setPixelColor(2, 255, 255, 255);
+        NEO02.setPixelColor(1, 0, 0, 0);
+        NEO02.setPixelColor(0, 0, 0, 0);
+      } else if (f == 4) {
+        NEO01.setPixelColor(0, 0, 0, 0);
+        NEO01.setPixelColor(1, 0, 0, 0);
+        NEO01.setPixelColor(2, 0, 0, 0);
+        NEO02.setPixelColor(1, 255, 255, 255);
+        NEO02.setPixelColor(0, 0, 0, 0);
+      } else if (f == 5) {
+        NEO01.setPixelColor(0, 0, 0, 0);
+        NEO01.setPixelColor(1, 0, 0, 0);
+        NEO01.setPixelColor(2, 0, 0, 0);
+        NEO02.setPixelColor(1, 0, 0, 0);
+        NEO02.setPixelColor(0, 255, 255, 255);
+      }
+      //
+      // Show Neopixels
+      neo_show();
+      //
+      // Get Random Card Values
+      int cardseed1 = (analogRead(0) + touchRead(TCH03_PIN));
+      randomSeed(cardseed1);
+      card_rand_1 = random(0, 3);
+      int cardseed2 = (cardseed1 * (card_rand_1 + 2));
+      randomSeed(cardseed2);
+      card_rand_2 = random(0, 3);
+      int cardseed3 = (analogRead(0) + touchRead(TCH04_PIN));
+      randomSeed(cardseed3);
+      card_rand_3 = random(0, 3);
+      int cardseed4 = (cardseed3 * (card_rand_3 + 2));
+      randomSeed(cardseed4);
+      card_rand_4 = random(0, 3);
+      int cardseed5 = (cardseed4 * (card_rand_4 + 2));
+      randomSeed(cardseed5);
+      card_rand_5 = random(0, 3);
+      //
+      // DEBUG - Print current iteration and card randoms to serial console for troubleshooting
+      if (DebugSerial >= 2) {
+        Serial.print("F="); Serial.print(f);
+        Serial.print(" card1="); Serial.print(card_rand_1); Serial.print("/"); Serial.print(cardseed1);
+        Serial.print(" card2="); Serial.print(card_rand_2); Serial.print("/"); Serial.print(cardseed2);
+        Serial.print(" card3="); Serial.print(card_rand_3); Serial.print("/"); Serial.print(cardseed3);
+        Serial.print(" card4="); Serial.print(card_rand_4); Serial.print("/"); Serial.print(cardseed4);
+        Serial.print(" card5="); Serial.print(card_rand_5); Serial.print("/"); Serial.println(cardseed5);
+      }
+      //
+      // Touch
+      //
+      Touch05_Value = touchRead(TCH05_PIN);
+      // Do Stuff If We Detect a Touch on TCH05_PIN
+      if (Touch05_Value < Touch05_Threshold) {
+        // DEBUG - Print current Touch value/threshold to serial console for troubleshooting
+        if (DebugSerial >= 2) {
+          Serial.print("TCH05_TOUCHED="); Serial.print(Touch05_Value);
+          Serial.print("/"); Serial.print(Touch05_Threshold);
+          Serial.print("-"); Serial.println(Touch05_LoopCount);
+        }
+        // STUFF - TCH05_PIN TOUCHED
+        Touch05_LoopCount++;
+        //
+        // Set Flush Card Colors based on randoms
+        NEO01.setPixelColor(0, card_red[card_rand_1], card_green[card_rand_1], card_blue[card_rand_1]);
+        NEO01.setPixelColor(1, card_red[card_rand_2], card_green[card_rand_2], card_blue[card_rand_2]);
+        NEO01.setPixelColor(2, card_red[card_rand_3], card_green[card_rand_3], card_blue[card_rand_3]);
+        NEO02.setPixelColor(0, card_red[card_rand_4], card_green[card_rand_4], card_blue[card_rand_4]);
+        NEO02.setPixelColor(1, card_red[card_rand_5], card_green[card_rand_5], card_blue[card_rand_5]);
+        //
+        // Show Neopixels
+        neo_show();
+        //
+        // Check if we have a Flush
+        if (card_rand_1 == card_rand_2 && card_rand_2 == card_rand_3 && card_rand_3 == card_rand_4 && card_rand_4 == card_rand_5) {
+          flush_win = true;
+        }
+        //
+        delay(1500);
+        break;
+      //
+      // Do Stuff If We DONT Detect a Touch on TCH05_PIN
+      } else {
+        // STUFF - TCH05_PIN NOT TOUCHED
+        Touch05_LoopCount = 0;
+      }
+      // Delay
+      delay(delaytime);
+    }
+    // break out if touch loop threshold met
+    if (Touch05_LoopCount > Touch05_Loop_Threshold) {
+      flush_card_active = false;
+    }
+    // Winner!
+    while (flush_win) {
+      // Don't update the lights any more, leave flush displayed but still check for touch
+      //
+      // DEBUG - Print card randoms to serial console for troubleshooting
+      if (DebugSerial >= 2) {
+        Serial.print("WINNER!!!");
+        Serial.print(" card1="); Serial.print(card_rand_1);
+        Serial.print(" card2="); Serial.print(card_rand_2);
+        Serial.print(" card3="); Serial.print(card_rand_3);
+        Serial.print(" card4="); Serial.print(card_rand_4);
+        Serial.print(" card5="); Serial.println(card_rand_5);
+      }
+      Touch05_Value = touchRead(TCH05_PIN);
+      if (Touch05_Value < Touch05_Threshold) {
+        // DEBUG - Print current Touch value/threshold to serial console for troubleshooting
+        if (DebugSerial >= 2) {
+          Serial.print("TCH05_TOUCHED="); Serial.print(Touch05_Value);
+          Serial.print("/"); Serial.print(Touch05_Threshold);
+          Serial.print("-"); Serial.println(Touch05_LoopCount);
+        }
+        // STUFF - TCH05_PIN TOUCHED
+        Touch05_LoopCount++;
+      } else {
+        // STUFF - TCH05_PIN NOT TOUCHED
+        Touch05_LoopCount = 0;
+      }
+      // Delay
+      delay(delaytime);
+      // break out if touch loop threshold met
+      if (Touch05_LoopCount > Touch05_Loop_Threshold) {
+        flush_win = false;
+      }
     }
   }
 }
