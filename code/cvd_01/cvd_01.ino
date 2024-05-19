@@ -5,6 +5,7 @@
 #include <WiFi.h>
 #include "Adafruit_NeoPixel.h"
 #include "SPI.h"
+#include <driver/adc.h>
 
 // Pin Definitions
 //
@@ -1015,12 +1016,17 @@ void flush_card_game() {
   int card_rand_5 = 0;
   //
   // Set Card Color Values
-  int card_red[] = { 255, 0, 0, 255 };
-  int card_green[] = { 0, 255, 0, 0 };
-  int card_blue[] = { 0, 0, 255, 255 };
+  int card_red[] = { 255, 0, 0, 255, 255, 0, 0, 255 };
+  int card_green[] = { 0, 255, 0, 0, 0, 255, 0, 0 };
+  int card_blue[] = { 0, 0, 255, 255, 0, 0, 255, 255 };
   //
-  //set the resolution to 12 bits (0-4095)
-  analogReadResolution(12);
+  // Analog Read Settings for Random Source
+  //adc1_config_width(ADC_WIDTH_BIT_12);
+  adc1_config_channel_atten(ADC1_CHANNEL_0,ADC_ATTEN_DB_0);
+  adc1_config_channel_atten(ADC1_CHANNEL_3,ADC_ATTEN_DB_0);
+  adc1_config_channel_atten(ADC1_CHANNEL_6,ADC_ATTEN_DB_0);
+  adc1_config_channel_atten(ADC1_CHANNEL_7,ADC_ATTEN_DB_0);
+  int cardseed = 0;
   //
   // Set Flush Detector
   bool flush_win = false;
@@ -1039,69 +1045,93 @@ void flush_card_game() {
     Serial.println("****************************************");
     Serial.println("****************************************");
     //
+    // Set a color to circle with based on a previous random color
+    int circle_rand = card_rand_1;
     for(int f=1; f<6; f++){
       if (f == 1) {
         //
-        NEO01.setPixelColor(0, 255, 255, 255);
+        NEO01.setPixelColor(0, card_red[circle_rand], card_green[circle_rand], card_blue[circle_rand]);
         NEO01.setPixelColor(1, 0, 0, 0);
         NEO01.setPixelColor(2, 0, 0, 0);
         NEO02.setPixelColor(1, 0, 0, 0);
         NEO02.setPixelColor(0, 0, 0, 0);
       } else if (f == 2) {
         NEO01.setPixelColor(0, 0, 0, 0);
-        NEO01.setPixelColor(1, 255, 255, 255);
+        NEO01.setPixelColor(1, card_red[circle_rand], card_green[circle_rand], card_blue[circle_rand]);
         NEO01.setPixelColor(2, 0, 0, 0);
         NEO02.setPixelColor(1, 0, 0, 0);
         NEO02.setPixelColor(0, 0, 0, 0);
       } else if (f == 3) {
         NEO01.setPixelColor(0, 0, 0, 0);
         NEO01.setPixelColor(1, 0, 0, 0);
-        NEO01.setPixelColor(2, 255, 255, 255);
+        NEO01.setPixelColor(2, card_red[circle_rand], card_green[circle_rand], card_blue[circle_rand]);
         NEO02.setPixelColor(1, 0, 0, 0);
         NEO02.setPixelColor(0, 0, 0, 0);
       } else if (f == 4) {
         NEO01.setPixelColor(0, 0, 0, 0);
         NEO01.setPixelColor(1, 0, 0, 0);
         NEO01.setPixelColor(2, 0, 0, 0);
-        NEO02.setPixelColor(1, 255, 255, 255);
+        NEO02.setPixelColor(1, card_red[circle_rand], card_green[circle_rand], card_blue[circle_rand]);
         NEO02.setPixelColor(0, 0, 0, 0);
       } else if (f == 5) {
         NEO01.setPixelColor(0, 0, 0, 0);
         NEO01.setPixelColor(1, 0, 0, 0);
         NEO01.setPixelColor(2, 0, 0, 0);
         NEO02.setPixelColor(1, 0, 0, 0);
-        NEO02.setPixelColor(0, 255, 255, 255);
+        NEO02.setPixelColor(0, card_red[circle_rand], card_green[circle_rand], card_blue[circle_rand]);
       }
       //
       // Show Neopixels
       neo_show();
       //
       // Get Random Card Values
-      int cardseed1 = (analogRead(0) + touchRead(TCH03_PIN));
-      randomSeed(cardseed1);
-      card_rand_1 = random(0, 3);
-      int cardseed2 = (cardseed1 * (card_rand_1 + 2));
-      randomSeed(cardseed2);
-      card_rand_2 = random(0, 3);
-      int cardseed3 = (analogRead(0) + touchRead(TCH04_PIN));
-      randomSeed(cardseed3);
-      card_rand_3 = random(0, 3);
-      int cardseed4 = (cardseed3 * (card_rand_3 + 2));
-      randomSeed(cardseed4);
-      card_rand_4 = random(0, 3);
-      int cardseed5 = (cardseed4 * (card_rand_4 + 2));
-      randomSeed(cardseed5);
-      card_rand_5 = random(0, 3);
-      //
-      // DEBUG - Print current iteration and card randoms to serial console for troubleshooting
+      if (DebugSerial >= 2) { Serial.print("F="); Serial.print(f); }
+      int seedsrc1 = adc1_get_raw(ADC1_CHANNEL_0);
+      int seedsrc2 = analogRead(0);
+      int seedsrc3 = touchRead(TCH03_PIN);
+      int seedsrc4 = touchRead(TCH04_PIN);
+      int seedsrc5 = adc1_get_raw(ADC1_CHANNEL_7);
+      int seedsrc6 = adc1_get_raw(ADC1_CHANNEL_3);
+      int seedsrc7 = adc1_get_raw(ADC1_CHANNEL_6);
       if (DebugSerial >= 2) {
-        Serial.print("F="); Serial.print(f);
-        Serial.print(" card1="); Serial.print(card_rand_1); Serial.print("/"); Serial.print(cardseed1);
-        Serial.print(" card2="); Serial.print(card_rand_2); Serial.print("/"); Serial.print(cardseed2);
-        Serial.print(" card3="); Serial.print(card_rand_3); Serial.print("/"); Serial.print(cardseed3);
-        Serial.print(" card4="); Serial.print(card_rand_4); Serial.print("/"); Serial.print(cardseed4);
-        Serial.print(" card5="); Serial.print(card_rand_5); Serial.print("/"); Serial.println(cardseed5);
+        Serial.print(" source="); Serial.print(seedsrc1);
+        Serial.print(" "); Serial.print(seedsrc2);
+        Serial.print(" "); Serial.print(seedsrc3);
+        Serial.print(" "); Serial.print(seedsrc4);
+        Serial.print(" "); Serial.print(seedsrc5);
+        Serial.print(" "); Serial.print(seedsrc6);
+        Serial.print(" "); Serial.print(seedsrc7);
       }
+      if (card_rand_1 == 0) {
+        cardseed = (seedsrc1 + seedsrc3 + seedsrc6);
+        randomSeed(cardseed);
+      }
+      card_rand_1 = random(0, 7);
+      if (DebugSerial >= 2) { Serial.print(" card1="); Serial.print(card_rand_1); Serial.print("/"); Serial.print(cardseed); }
+      if (card_rand_2 == 0) {
+        cardseed = (seedsrc2 + seedsrc4 + seedsrc7);
+        randomSeed(cardseed);
+      }
+      card_rand_2 = random(0, 7);
+      if (DebugSerial >= 2) { Serial.print(" card2="); Serial.print(card_rand_2); Serial.print("/"); Serial.print(cardseed); }
+      if (card_rand_3 == 0) {
+        cardseed = (seedsrc1 + seedsrc4 + seedsrc6);
+        randomSeed(cardseed);
+      }
+      card_rand_3 = random(0, 7);
+      if (DebugSerial >= 2) { Serial.print(" card3="); Serial.print(card_rand_3); Serial.print("/"); Serial.print(cardseed); }
+      if (card_rand_4 == 0) {
+        cardseed = (seedsrc3 + seedsrc5 + seedsrc7);
+        randomSeed(cardseed);
+      }
+      card_rand_4 = random(0, 7);
+      if (DebugSerial >= 2) { Serial.print(" card4="); Serial.print(card_rand_4); Serial.print("/"); Serial.print(cardseed); }
+      if (card_rand_5 == 0) {
+        cardseed = (seedsrc4 + seedsrc5 + seedsrc6);
+        randomSeed(cardseed);
+      }
+      card_rand_5 = random(0, 7);
+      if (DebugSerial >= 2) { Serial.print(" card5="); Serial.print(card_rand_5); Serial.print("/"); Serial.println(cardseed); }
       //
       // Touch
       //
@@ -1112,7 +1142,14 @@ void flush_card_game() {
         if (DebugSerial >= 2) {
           Serial.print("TCH05_TOUCHED="); Serial.print(Touch05_Value);
           Serial.print("/"); Serial.print(Touch05_Threshold);
-          Serial.print("-"); Serial.println(Touch05_LoopCount);
+          Serial.print("-"); Serial.print(Touch05_LoopCount);
+          String comma=",";
+          Serial.print(" C1 "); Serial.print(card_rand_1 + comma + card_red[card_rand_1] + comma + card_green[card_rand_1] + comma + card_blue[card_rand_1]);
+          Serial.print(" C2 "); Serial.print(card_rand_2 + comma + card_red[card_rand_2] + comma + card_green[card_rand_2] + comma + card_blue[card_rand_2]);
+          Serial.print(" C3 "); Serial.print(card_rand_3 + comma + card_red[card_rand_3] + comma + card_green[card_rand_3] + comma + card_blue[card_rand_3]);
+          Serial.print(" C4 "); Serial.print(card_rand_4 + comma + card_red[card_rand_4] + comma + card_green[card_rand_4] + comma + card_blue[card_rand_4]);
+          Serial.print(" C5 "); Serial.print(card_rand_5 + comma + card_red[card_rand_5] + comma + card_green[card_rand_5] + comma + card_blue[card_rand_5]);
+          Serial.println();
         }
         // STUFF - TCH05_PIN TOUCHED
         Touch05_LoopCount++;
@@ -1128,11 +1165,16 @@ void flush_card_game() {
         neo_show();
         //
         // Check if we have a Flush
+        if (card_rand_1 >= 4) { card_rand_1 = card_rand_1 - 4; }
+        if (card_rand_2 >= 4) { card_rand_2 = card_rand_2 - 4; }
+        if (card_rand_3 >= 4) { card_rand_3 = card_rand_3 - 4; }
+        if (card_rand_4 >= 4) { card_rand_4 = card_rand_4 - 4; }
+        if (card_rand_5 >= 4) { card_rand_5 = card_rand_5 - 4; }
         if (card_rand_1 == card_rand_2 && card_rand_2 == card_rand_3 && card_rand_3 == card_rand_4 && card_rand_4 == card_rand_5) {
           flush_win = true;
         }
         //
-        delay(1500);
+        delay(2000);
         break;
       //
       // Do Stuff If We DONT Detect a Touch on TCH05_PIN
