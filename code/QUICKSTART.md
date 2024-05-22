@@ -4,7 +4,7 @@ Notes:
 
 * You will need Arduino CLI Installed and a Bash shell (on Windows Git Bash is provided by Git for Windows)
 * The CTF code is a precompiled library so you cant change that for now, source to be released after defcon
-* The current code that is loaded on the badge is the sketch named ```cvd_01```
+* The current code that is loaded on the badge is the sketch named ```cvd_02```
 
 ## Setting up Arduino CLI environment
 
@@ -22,7 +22,7 @@ Once you have made whatever changes you wanted to the code here is how we compil
 
 * Change directory to the code directory if you arent already there
 * Run the following command preceding it with ```bash``` if needed by your OS changing the sketch name if needed
-  * ```./cli-compile.sh cvd_01```
+  * ```./cli-compile.sh cvd_02```
 * If it completes without errors then the compile is complete
   * If you have errors then read what they are and make the appropriate changes to your code
 
@@ -37,7 +37,7 @@ Follow these steps:
   * ```arduino-cli --config-file arduino-cli.yml board list```
 * Take note of the serial port name of the connected board 
 * Run the following command preceding it with ```bash``` if needed and changing the serial port to above
-  * ```./cli-upload.sh cvd_01 COM6```
+  * ```./cli-upload.sh cvd_02 COM6```
 
 ## Serial Monitor
 
