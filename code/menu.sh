@@ -4,7 +4,7 @@
 ## VARIABLE DEFAULTS
 ########################################
 BoardSerial="not-set"
-CodeSketch="cvd_01"
+CodeSketch="cvd_02"
 
 ########################################
 ## COLOR TEXT SETUP
@@ -51,6 +51,9 @@ GetCodeSketch(){
 }
 MinicomSerialMonitor(){
   minicom -D $BoardSerial -b 115200
+}
+ArduinoSerialMonitor(){
+  arduino-cli monitor --config baudrate=115200 --port $BoardSerial
 }
 CompileCode(){
   if ! [ -d "$CodeSketch" ]
@@ -113,22 +116,25 @@ $(CTxtGreen '#### BADGE SERIAL:') $BoardSerialTxt $(CTxtGreen 'CODE:') $(CTxtYel
 $(CTxtGreen '######################################################################')
 $(CTxtGreen '####') $(CTxtBlue '1 - UPDATE BADGE SERIAL . .') $(CTxtGreen '####') $(CTxtBlue '2 - CHANGE CODE SKETCH. . .') $(CTxtGreen '####')
 $(CTxtGreen '####') $(CTxtBlue '3 - COMPILE CODE SKETCH . .') $(CTxtGreen '####') $(CTxtBlue '4 - UPLOAD CODE TO BADGE. .') $(CTxtGreen '####')
-$(CTxtGreen '####') $(CTxtBlue '5 - MINICOM SERIAL MONITOR.') $(CTxtGreen '####') $(CTxtBlue '0 - EXIT MENU . . . . . . .') $(CTxtGreen '####')
+$(CTxtGreen '####') $(CTxtBlue '5 - MINICOM SERIAL MONITOR.') $(CTxtGreen '####') $(CTxtBlue '6 - ARDUINO SERIAL MONITOR ') $(CTxtGreen '####')
+$(CTxtGreen '####') $(CTxtBlue '0 - EXIT MENU . . . . . . .') $(CTxtGreen '####') $(CTxtBlue '. . . . . . . . . . . . . .') $(CTxtGreen '####')
 $(CTxtGreen '######################################################################')
 "
         read -p "$(CTxtGreen '####') $(CTxtBlue 'CHOOSE AN OPTION >>') " a
         case $a in
-	        1) GetBoardSerial ; menu ;;
-	        2) GetCodeSketch ; menu ;;
-	        3) CompileCode ; menu ;;
-	        4) UploadCode ; menu ;;
-	        5) MinicomSerialMonitor ; menu ;;
-			0) exit 0 ;;
-			*) echo "$(CTxtERROR 'WRONG OPTION')"; menu;;
+          1) GetBoardSerial ; menu ;;
+          2) GetCodeSketch ; menu ;;
+          3) CompileCode ; menu ;;
+          4) UploadCode ; menu ;;
+          5) MinicomSerialMonitor ; menu ;;
+          6) ArduinoSerialMonitor ; menu ;;
+          0) exit 0 ;;
+          *) echo "$(CTxtERROR 'WRONG OPTION')"; menu;;
         esac
 }
 
 ########################################
 ## MENU LAUNCH
 ########################################
+GetBoardSerial
 menu
