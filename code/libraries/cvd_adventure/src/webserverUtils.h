@@ -18,16 +18,11 @@
 bool shouldReboot = false;            // schedule a reboot
 
 AsyncWebServer *server80;               // initialise webserver
+AsyncWebServer *server443;              // initialise webserver
 
 //web config values
 const String httpadminuser = "admin";
 const String httpadminpassword = "admin";
-
-void notFound(AsyncWebServerRequest *request) {
-  String logmessage = "Client:" + request->client()->remoteIP().toString() + ":" + request->client()->remotePort() + " " + request->url();
-  Serial.println(logmessage);
-  request->send(404, "text/plain", "Not found");
-}
 
 // used by server.on functions to discern whether a user has the correct httpapitoken OR is authenticated by username and password
 bool checkUserWebAuth(AsyncWebServerRequest * request, String usr, String pwd) {
@@ -57,6 +52,32 @@ String processor(const String& var) {
   }
 }
 
+const char notfound_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="1; URL=http://192.168.1.31/" />
+</head>
+<body>
+REDIRECT PERMANENT
+</body>
+</html>
+)rawliteral";
+
+// Commented this out to have onNotFound redirect to index on the web servers instead
+void notFound(AsyncWebServerRequest *request) {
+  String logmessage = "Client:" + request->client()->remoteIP().toString() + ":" + request->client()->remotePort() + " " + request->url();
+  Serial.println(logmessage);
+  request->send_P(200, "text/html", notfound_html, processor);
+}
+// void notFound(AsyncWebServerRequest *request) {
+//   String logmessage = "Client:" + request->client()->remoteIP().toString() + ":" + request->client()->remotePort() + " " + request->url();
+//   Serial.println(logmessage);
+//   request->send(404, "text/plain", "Not found");
+// }
+
 #include "webserver80.h"
+#include "webserver443.h"
 
 #endif

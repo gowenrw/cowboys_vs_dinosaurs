@@ -6,6 +6,10 @@
 #include "Adafruit_NeoPixel.h"
 #include "SPI.h"
 #include <driver/adc.h>
+#include <esp_wifi_types.h>
+#include <esp_wifi.h>
+// Include Adventure Game
+#include <cvd_adventure.h>
 
 // Pin Definitions
 //
@@ -312,6 +316,8 @@ void loop(){
       }
       // Put stuff to happen every iteration here
       Touch03_IntCount = 1;
+      //
+      touched3000();
     //
     // Do Stuff If We DONT Detect a Touch on TCH03_PIN
     } else {
@@ -341,8 +347,6 @@ void loop(){
       }
       // Put stuff to happen every iteration here
       Touch04_IntCount = 1;
-      //
-      touchedSociety();
     //
     // Do Stuff If We DONT Detect a Touch on TCH04_PIN
     } else {
@@ -514,6 +518,58 @@ void loop(){
     ledAllOff();
     //
     Touch02_LoopCount = 0;
+    //
+    status_neo_mode = 0;
+    // Pause before exiting
+    delay(100);
+  }
+
+  // //////////////////////////////////////////////////
+  //
+  // Launch CVD ADVENTURE GAME Alternate Mainline Code When
+  // Touch04_LoopCount exceeds Touch04_Loop_Threshold
+  //
+  // //////////////////////////////////////////////////
+  if (Touch04_LoopCount > Touch04_Loop_Threshold) {
+    //
+    Serial.println("LONG TOUCH DETECTED on TCH04 - JUMP TO ALTERNATE CODE");
+    //
+    ledAllOff();
+    //
+    Touch04_LoopCount = 0;
+    //
+    // Set status to 3/red
+    status_neo_mode = 3;
+    status_indicator(status_neo_mode);
+    neo_show();
+    //
+    // Alternate code loop
+    //
+    // Pause before turning on wifi
+    delay(200);
+    // Turn on wifi in ap mode
+    wakeModemSleep();
+    // Long Pause before launching alternate code to allow wifi to come active
+    delay(4000);
+    // Show Wifi Status
+    Serial.println(" WiFi Status: "); Serial.println(wl_status_to_string(WiFi.status()));
+    // Launch CVD ADVENTURE GAME alternate main line code
+    cvdAdventureMain();
+    //flush_card_game();
+    //
+    // END ALTERNATE MAIN LOOP
+    Serial.println("****************************************");
+    Serial.println("*** EXITING CVD ADVENTURE GAME MODE ****");
+    Serial.println("****************************************");
+    //
+    // Turn Off Wifi
+    setModemSleep();
+    // Pause after turning off wifi
+    delay(500);
+    //
+    ledAllOff();
+    //
+    Touch04_LoopCount = 0;
     //
     status_neo_mode = 0;
     // Pause before exiting
@@ -840,7 +896,7 @@ void touchedDinosaurs() {
     NEO02.setPixelColor(2, 255, 255, 255);
 }
 //
-void touchedSociety() {
+void touched3000() {
     // Quick pulse of neopixels
     int socseed = (analogRead(0) + touchRead(TCH03_PIN) + touchRead(TCH02_PIN));
     randomSeed(socseed);
@@ -926,9 +982,8 @@ void reaction_time_game() {
     Serial.println("****************************************");
     Serial.println("******* REACTION TIME GAME MODE ********");
     Serial.println("****************************************");
-    Serial.println("****************************************");
     Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH01 ***");
-    Serial.println("****************************************");
+    Serial.println("***     THE DINOSAURS TEXT BUTTON    ***");
     Serial.println("****************************************");
     Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
     Serial.println("****************************************");
@@ -1000,9 +1055,8 @@ void batt_chrg_noled() {
     Serial.println("****************************************");
     Serial.println("********* BATT_CHRG_NOLED MODE *********");
     Serial.println("****************************************");
-    Serial.println("****************************************");
     Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH02 ***");
-    Serial.println("****************************************");
+    Serial.println("***       THE LOGO SHAPE BUTTON      ***");
     Serial.println("****************************************");
     Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
     Serial.println("****************************************");
@@ -1092,9 +1146,8 @@ void flush_card_game() {
     Serial.println("****************************************");
     Serial.println("******** FLUSH CARD GAME MODE **********");
     Serial.println("****************************************");
-    Serial.println("****************************************");
     Serial.println("*** ACTIVATED BY LONG TOUCH ON TCH05 ***");
-    Serial.println("****************************************");
+    Serial.println("***      THE COWBOYS TEXT BUTTON     ***");
     Serial.println("****************************************");
     Serial.println("** LONG PRESS AGAIN TO EXIT THIS MODE **");
     Serial.println("****************************************");

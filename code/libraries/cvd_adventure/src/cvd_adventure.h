@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include <esp_wifi_types.h>
+#include <esp_wifi.h>
 
 #include <AsyncTCP.h>
 #include <DNSServer.h>
