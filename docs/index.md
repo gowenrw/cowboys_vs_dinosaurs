@@ -59,6 +59,19 @@ Pressing the word "Dinosaurs" will light up the two dinosaurs faces for a few se
 Holding a long press of 20 seconds on the word "Dinosaurs" will enter the Reaction Time game mode.
 This is a simple game that turn on each of the four card LEDs one at a time before turning them off again.  Pressing "Dinosaurs" will stop the LEDS in thier current positions for a few seconds.  The goal of the game is to try to stop it with all four LEDs lit. This LED mode can be disabled by long pressing "Dinosaurs" again or by power cycling the badge. ![Reaction Image](badge_pic_16.jpg)
 
+## Touching 3000
+
+Pressing the word "3000" will flash the center lights briefly in a boop effect.
+This was added in code revision 2 so if this does nothing then you are running an older code version.
+
+## Touching Society - Adventure Game
+
+Pressing and holding the word "Society" for a long press of 20 seconds you will enter the Adventure game.
+This will light the status LED red and then spin up a wireless access point with the name "cvd-badge-<MAC>" and a web server on 192.168.1.31
+Connect to the access point which is open and does not require a password, then browse http://192.168.1.31 to start the adventure.
+This is a simple choose your own adventure game.
+This was added in code revision 2 so if this does nothing then you are running an older code version.
+
 # Details
 
 Detailed Information about the project will be posted here soon.
