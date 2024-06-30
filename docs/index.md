@@ -11,9 +11,6 @@ Welcome to the Cowboys vs Dinosaurs Badge website.
 This badge was designed for the 3000 Society conference in May 2024.
 It will also be made available at the DEFCON 32 conference in Aug 2024.
 
-The theme was based on the 3000 Society conference theme of "Cowboys vs Dinosaurs".
-Since this is a gaming conference I thought it was apppropriate to have them facing off at a card game with a playing card background.
-
 On this page you will find all the details about this badge including an operations guide, an assembly guide (for those building the badge from a kit), and a detailed review of the art and cicuit design and pcb design.
 
 -- [@alt_bier](https://twitter.com/alt_bier)  - [My Contact Info](https://gowen.net/about)
@@ -21,6 +18,27 @@ On this page you will find all the details about this badge including an operati
 ---
 
 ![Touch Image](HeroTouch.gif)
+
+# Details
+
+The badge theme was based on the 3000 Society conference theme of "Cowboys vs Dinosaurs".
+Since this is a gaming conference I thought it was apppropriate to have them facing off at a card game with a playing card background.
+
+This badge includes an ESP32 Wemos Lolin32 development board, six neopixel addressable LEDs, six traditional one color LEDs, and five capacitive touch areas, all powered by a LIPO battery.
+
+Since the ESP Dev board has an embedded battery charge circuit the schematic for the badge is fairly simple.
+The PCB layout and tracing was a challenge due to all the solder mask voids and capacitive touch areas.
+[![Schematic](cvd_schematic_sm.jpg)](cvd_schematic.jpg target="_blank")
+[![PCB](pcb_rev2_sm.jpg)](pcb_rev2.jpg target="_blank")
+
+# Kit Assembly
+
+Assembly Instructions for the Cowboys vs Dinosaurs Badge kit can be found here: [Badge Assembly](assembly.md)
+
+An assembly video can be found here:
+[Cowboys vs Dinosaurs Badge Assembly Video](https://www.youtube.com/watch?v=riOWy_HshVY&ab_channel=alt_bier_hacker)
+
+![Badge_Kit](AssemblyPicture31sm.jpg)
 
 # Badge Operations
 
@@ -71,11 +89,3 @@ This will light the status LED red and then spin up a wireless access point with
 Connect to the access point which is open and does not require a password, then browse http://192.168.1.31 to start the adventure.
 This is a simple choose your own adventure game.
 This was added in code revision 2 so if this does nothing then you are running an older code version.
-
-# Details
-
-Detailed Information about the project will be posted here soon.
-
-# Assembly Instructions
-
-Assembly Instructions will be posted here soon.
