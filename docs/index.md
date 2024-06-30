@@ -28,8 +28,8 @@ This badge includes an ESP32 Wemos Lolin32 development board, six neopixel addre
 
 Since the ESP Dev board has an embedded battery charge circuit the schematic for the badge is fairly simple.
 The PCB layout and tracing was a challenge due to all the solder mask voids and capacitive touch areas.
-[![Schematic](cvd_schematic_sm.jpg)](cvd_schematic.jpg target="_blank")
-[![PCB](pcb_rev2_sm.jpg)](pcb_rev2.jpg target="_blank")
+[![Schematic](cvd_schematic_sm.jpg)](cvd_schematic.jpg)
+[![PCB](pcb_rev2_sm.jpg)](pcb_rev2.jpg)
 
 # Kit Assembly
 

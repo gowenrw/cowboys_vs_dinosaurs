@@ -45,8 +45,8 @@ This is the list of components that are provided in the kit
     * 2x Header Male 2.54mm 1x2 Pin Right Angle Strip
   * 1x Sticker (Not Required for badge Assembly)
 
-[![Badge_Kit](AssemblyPicture30sm.jpg)](AssemblyPicture30.jpg target="_blank")
-[![Badge_Kit](AssemblyPicture31sm.jpg)](AssemblyPicture31.jpg target="_blank")
+[![Badge_Kit](AssemblyPicture30sm.jpg)](AssemblyPicture30.jpg)
+[![Badge_Kit](AssemblyPicture31sm.jpg)](AssemblyPicture31.jpg)
 
 ## Assembly Steps
 
@@ -56,10 +56,10 @@ This is the list of components that are provided in the kit
   * Mini pliers are helpful but not required
   * The rough edges can be filed or sanded down if a smooth edge is preferred
 
-[![Break_Apart_PCBs](AssemblyPicture26sm.jpg)](AssemblyPicture26.jpg target="_blank")
-[![Break_Apart_PCBs](AssemblyPicture27sm.jpg)](AssemblyPicture27.jpg target="_blank")
-[![Break_Apart_PCBs](AssemblyPicture28sm.jpg)](AssemblyPicture28.jpg target="_blank")
-[![Break_Apart_PCBs](AssemblyPicture29sm.jpg)](AssemblyPicture29.jpg target="_blank")
+[![Break_Apart_PCBs](AssemblyPicture26sm.jpg)](AssemblyPicture26.jpg)
+[![Break_Apart_PCBs](AssemblyPicture27sm.jpg)](AssemblyPicture27.jpg)
+[![Break_Apart_PCBs](AssemblyPicture28sm.jpg)](AssemblyPicture28.jpg)
+[![Break_Apart_PCBs](AssemblyPicture29sm.jpg)](AssemblyPicture29.jpg)
 
 * Resistors
   * The eight 47-Ohm resistors are labeled R1-R6, R10 and R20
@@ -68,7 +68,7 @@ This is the list of components that are provided in the kit
   * Solder all 16 resistor connections (both ends of the 8 resistors)
   * When cooled cut the component legs off at the top of the solder joints (do not cut into the solder joint)
 
-[![Resistors](AssemblyPicture01sm.jpg)](AssemblyPicture01.jpg target="_blank")
+[![Resistors](AssemblyPicture01sm.jpg)](AssemblyPicture01.jpg)
 
 * One Color 3mm 2 pin LEDs
   * The six traditional one color 2 pin LEDs are easy to solder but they need to be bent over for specific positioning on the PCB so be careful with placement
@@ -88,9 +88,9 @@ This is the list of components that are provided in the kit
     * Solder all the LED connections
     * When cooled cut the component legs off at the top of the solder joints (do not cut into the solder joint)
 
-[![One_Color_LEDs](AssemblyPicture02sm.jpg)](AssemblyPicture02.jpg target="_blank")
-[![One_Color_LEDs](AssemblyPicture03sm.jpg)](AssemblyPicture03.jpg target="_blank")
-[![One_Color_LEDs](AssemblyPicture04sm.jpg)](AssemblyPicture04.jpg target="_blank")
+[![One_Color_LEDs](AssemblyPicture02sm.jpg)](AssemblyPicture02.jpg)
+[![One_Color_LEDs](AssemblyPicture03sm.jpg)](AssemblyPicture03.jpg)
+[![One_Color_LEDs](AssemblyPicture04sm.jpg)](AssemblyPicture04.jpg)
 
 * Addressable Neopixel 5mm 4-Pin LEDs
   * The six Neopixel LEDs are a bit more difficult to solder given the pins are close together and they need to be bent over for specific positioning on the PCB so be careful with placement
@@ -105,8 +105,8 @@ This is the list of components that are provided in the kit
     * Solder all the LED connections
     * When cooled cut the component legs off at the top of the solder joints (do not cut into the solder joint)
 
-[![Neopixel_LEDs](AssemblyPicture05sm.jpg)](AssemblyPicture05.jpg target="_blank")
-[![Neopixel_LEDs](AssemblyPicture06sm.jpg)](AssemblyPicture06.jpg target="_blank")
+[![Neopixel_LEDs](AssemblyPicture05sm.jpg)](AssemblyPicture05.jpg)
+[![Neopixel_LEDs](AssemblyPicture06sm.jpg)](AssemblyPicture06.jpg)
 
 * Capacitors
   * The six capacitors are tan colored 2.5mm wide 2 pin 100nF non-polar ceramic disc capacitors (that look like Ibuprofen tablets) which are labeled C10-12, C20-22
@@ -116,7 +116,7 @@ This is the list of components that are provided in the kit
   * The large ground plane makes one of the pins take a bit longer to heat up and the thin legs and larger pads make for uneven heating.  So, take a little more time to make sure these have a good connection.
   * When cooled cut the component legs off at the top of the solder joints (do not cut into the solder joint)
 
-[![Capacitors](AssemblyPicture07sm.jpg)](AssemblyPicture07.jpg target="_blank")
+[![Capacitors](AssemblyPicture07sm.jpg)](AssemblyPicture07.jpg)
 
 * Switch for battery power
   * The battery power switch is a 3-pin SPDT switch with a 5mm lever and right angle pins
@@ -124,7 +124,7 @@ This is the list of components that are provided in the kit
   * You might need to tilt it a bit to allow the pins to stick through the PCB enough to easily solder them.
   * Solder all the switch connections
 
-[![Switch](AssemblyPicture08sm.jpg)](AssemblyPicture08.jpg target="_blank")
+[![Switch](AssemblyPicture08sm.jpg)](AssemblyPicture08.jpg)
 
 * Battery Holder Right Angle Male Headers
   * The 2.54mm 1x2 Pin Right Angle Male Headers are used with a rubber band to secure the lipo battery and are labeled J2 and J3 on the PCB
@@ -132,7 +132,7 @@ This is the list of components that are provided in the kit
   * Solder all the connections
   * It may be tricky to solder them while keeping them from pressing against the PCB, try soldering only one pin then adjust the header while applying heat to that pin
 
-[![Battery_Holder](AssemblyPicture09sm.jpg)](AssemblyPicture09.jpg target="_blank")
+[![Battery_Holder](AssemblyPicture09sm.jpg)](AssemblyPicture09.jpg)
 
 * The ESP32 development board
   * This is a 26 pin ESP32 WeMos Lolin32 development board with two 1x13 pin male header strips
@@ -141,10 +141,10 @@ This is the list of components that are provided in the kit
   * Make sure to place the ESP32 in its designated place on the PCB and ensure it is aligned properly according to the silk drawing on the badge PCB (look at the USB and Battery connector symbols drawn in silkscreen)
   * Solder all the connections
 
-[![ESP32_dev_board](AssemblyPicture15sm.jpg)](AssemblyPicture15.jpg target="_blank")
-[![ESP32_dev_board](AssemblyPicture16sm.jpg)](AssemblyPicture16.jpg target="_blank")
-[![ESP32_dev_board](AssemblyPicture17sm.jpg)](AssemblyPicture17.jpg target="_blank")
-[![ESP32_dev_board](AssemblyPicture11sm.jpg)](AssemblyPicture11.jpg target="_blank")
+[![ESP32_dev_board](AssemblyPicture15sm.jpg)](AssemblyPicture15.jpg)
+[![ESP32_dev_board](AssemblyPicture16sm.jpg)](AssemblyPicture16.jpg)
+[![ESP32_dev_board](AssemblyPicture17sm.jpg)](AssemblyPicture17.jpg)
+[![ESP32_dev_board](AssemblyPicture11sm.jpg)](AssemblyPicture11.jpg)
 
 * ESP32 Battery Power Wires
   * The ESP32 development board has a JST mini PH battery power connector which needs to be connected to the badge PCB
@@ -161,10 +161,10 @@ This is the list of components that are provided in the kit
   * Verify that the connector can reach to be plugged into the ESP43 dev board (you might need to twist the connector around to line it up)
   * Be sure to disconnect this connector since we do not want it connected when working with the LIPO Battery
 
-[![Power_wires](AssemblyPicture25sm.jpg)](AssemblyPicture25.jpg target="_blank")
-[![Power_wires](AssemblyPicture24sm.jpg)](AssemblyPicture24.jpg target="_blank")
-[![Power_wires](AssemblyPicture12sm.jpg)](AssemblyPicture12.jpg target="_blank")
-[![Power_wires](AssemblyPicture13sm.jpg)](AssemblyPicture13.jpg target="_blank")
+[![Power_wires](AssemblyPicture25sm.jpg)](AssemblyPicture25.jpg)
+[![Power_wires](AssemblyPicture24sm.jpg)](AssemblyPicture24.jpg)
+[![Power_wires](AssemblyPicture12sm.jpg)](AssemblyPicture12.jpg)
+[![Power_wires](AssemblyPicture13sm.jpg)](AssemblyPicture13.jpg)
 
 * LIPO Battery
   * The LIPO Battery has a charge so you need to be careful when working with it
@@ -178,26 +178,26 @@ This is the list of components that are provided in the kit
   * Attach a rubber band over the battery between the male header pins in J2 and J3
   * Plug in the ESP32 battery connector
 
-[![Lipo_Battery](AssemblyPicture18sm.jpg)](AssemblyPicture18.jpg target="_blank")
-[![Lipo_Battery](AssemblyPicture19sm.jpg)](AssemblyPicture19.jpg target="_blank")
+[![Lipo_Battery](AssemblyPicture18sm.jpg)](AssemblyPicture18.jpg)
+[![Lipo_Battery](AssemblyPicture19sm.jpg)](AssemblyPicture19.jpg)
 
 * Testing
   * Turn on the badge and make sure all the LEDs light up
   * If any of them do not then turn the badge off, make any necessary corrections and try again.
   * Turn the badge off when done before connecting the two PCBs
 
-[![Testing](AssemblyPicture14sm.jpg)](AssemblyPicture14.jpg target="_blank")
-[![Testing](AssemblyPicture32sm.jpg)](AssemblyPicture32.jpg target="_blank")
+[![Testing](AssemblyPicture14sm.jpg)](AssemblyPicture14.jpg)
+[![Testing](AssemblyPicture32sm.jpg)](AssemblyPicture32.jpg)
 
 * Connect Both PCBs using Standoffs and M3 Screws
   * On the rear badge PCB (the one with no components) attach a brass 10mm standoff using a brass M3 screw in each of the four drill holes in that PCB making them reasonably tight (over tightening might crack the PCB)
   * Align the front and rear PCBs and on the front PCB insert the brass screws into the PCB and standoff connecting the two PCBs, but keep them only loosly connected at first
   * Check that the battery wires are fully clear of the standoffs as you tighten each of the four M3 screws on the front PCB making them reasonably tight (over tightening might crack the PCB)
 
-[![Connect_PCBs](AssemblyPicture20sm.jpg)](AssemblyPicture20.jpg target="_blank")
-[![Connect_PCBs](AssemblyPicture21sm.jpg)](AssemblyPicture21.jpg target="_blank")
-[![Connect_PCBs](AssemblyPicture22sm.jpg)](AssemblyPicture22.jpg target="_blank")
-[![Connect_PCBs](AssemblyPicture23sm.jpg)](AssemblyPicture23.jpg target="_blank")
+[![Connect_PCBs](AssemblyPicture20sm.jpg)](AssemblyPicture20.jpg)
+[![Connect_PCBs](AssemblyPicture21sm.jpg)](AssemblyPicture21.jpg)
+[![Connect_PCBs](AssemblyPicture22sm.jpg)](AssemblyPicture22.jpg)
+[![Connect_PCBs](AssemblyPicture23sm.jpg)](AssemblyPicture23.jpg)
 
 * Enjoy!
   * Attach the lanyard and enjoy your new creation.
