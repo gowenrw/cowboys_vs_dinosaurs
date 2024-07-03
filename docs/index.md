@@ -28,12 +28,13 @@ This badge includes an ESP32 Wemos Lolin32 development board, six neopixel addre
 
 Since the ESP Dev board has an embedded battery charge circuit the schematic for the badge is fairly simple.
 The PCB layout and tracing was a challenge due to all the solder mask voids and capacitive touch areas.
+
 [![Schematic](cvd_schematic_sm.jpg)](cvd_schematic.jpg)
 [![PCB](pcb_rev2_sm.jpg)](pcb_rev2.jpg)
 
 # Kit Assembly
 
-Assembly Instructions for the Cowboys vs Dinosaurs Badge kit can be found here: [Badge Assembly](assembly.md)
+Assembly Instructions for the Cowboys vs Dinosaurs Badge kit can be found here: [Cowboys vs Dinosaurs Badge Assembly Instructions](assembly.md)
 
 An assembly video can be found here:
 [Cowboys vs Dinosaurs Badge Assembly Video](https://www.youtube.com/watch?v=riOWy_HshVY&ab_channel=alt_bier_hacker)

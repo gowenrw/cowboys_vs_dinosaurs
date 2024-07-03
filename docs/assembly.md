@@ -22,7 +22,7 @@ The badges have been distributed in two different packages
 This is the list of components that are provided in the kit
 
 * Main Kit Bag (20x30cm-8x12in Holographic) Containing:
-  * 1x PCB panel (which breaks apart for top/front and bottom/rear PCBs)
+  * 1x PCB panel (which breaks apart for top/front and bottom/rear PCBs) Note: The PCB might have broken apart during shipping, but this is not a problem as its required for assembly.
   * Small Component Bag #1 (4x5cm-1.5x2in Clear) Containing:
     * 4x Brass10mm Standoff and 2x M3 Screw set
   * Small Component Bag #2 (5x7cm-2x2.8in Red) Containing:
@@ -43,7 +43,7 @@ This is the list of components that are provided in the kit
     * 8x 47 Ohm 6.2mm Metal Film Resistor
     * 1x SS12D00 3-Pin SPDT Right Angle Switch
     * 2x Header Male 2.54mm 1x2 Pin Right Angle Strip
-  * 1x Sticker (Not Required for badge Assembly)
+  * 2x Sticker (Not Required for badge Assembly)
 
 [![Badge_Kit](AssemblyPicture30sm.jpg)](AssemblyPicture30.jpg)
 [![Badge_Kit](AssemblyPicture31sm.jpg)](AssemblyPicture31.jpg)
